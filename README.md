@@ -227,7 +227,7 @@ psql -U postgres -d Chess_Tournament_DB_New -f backup_cmd.sql
 (מקום להוספת צילומי מסך של חלון הגיבוי והשחזור המצליח ב-DBeaver)
 
 7. מדריך להרצת הסקריפטים ומבנה התיקיות
-📂 מבנה תיקיות הפרויקט ב-Git
+📂 מבנה תיקיות הפרויקט ב
 DBProject/
 │
 └── שלב א/
@@ -244,6 +244,7 @@ DBProject/
     │
     └── mockarooFiles/
         └── tournament_mock.sql # נתוני הטורנירים הגנרטיביים מ-Mockaroo
+   
 🚀 שלבי ההרצה לבדיקת המערכת:
 ודא כי שרת מסד הנתונים שלך פעיל ומחובר באמצעות DBeaver.
 
