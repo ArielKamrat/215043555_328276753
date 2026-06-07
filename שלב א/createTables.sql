@@ -12,46 +12,7 @@ CREATE TABLE Club (
 );
 
 -- ==========================================
--- מחלקה 2: משחקים ומהלכים [cite: 12]
--- ==========================================
-CREATE TABLE TimeControl (
-    tc_id INT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    base_seconds INT NOT NULL,
-    increment_seconds INT NOT NULL
-);
-
-CREATE TABLE GameVariant (
-    variant_id INT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE Game (
-    game_id INT PRIMARY KEY,
-    white_player_id INT REFERENCES Player(player_id),
-    black_player_id INT REFERENCES Player(player_id),
-    tc_id INT REFERENCES TimeControl(tc_id),
-    variant_id INT REFERENCES GameVariant(variant_id),
-    result VARCHAR(10),
-    start_date DATE NOT NULL,
-    end_date DATE,
-    -- אילוץ: תאריך סיום לא יכול להיות לפני תאריך התחלה
-    CONSTRAINT chk_game_dates CHECK (end_date >= start_date)
-);
-
-CREATE TABLE Move (
-    move_id INT PRIMARY KEY,
-    game_id INT REFERENCES Game(game_id),
-    move_number INT NOT NULL,
-    color VARCHAR(5),
-    pgn_notation VARCHAR(20) NOT NULL,
-    move_timestamp DATE NOT NULL,
-    time_spent_ms INT,
-    engine_eval_cp INT
-);
-
--- ==========================================
--- מחלקה 3: תחרויות ואירועים [cite: 17]
+-- מחלקה 3: תחרויות ואירועים
 -- ==========================================
 CREATE TABLE Tournament (
     tournament_id INT PRIMARY KEY,
@@ -80,10 +41,31 @@ CREATE TABLE Round (
     scheduled_date DATE NOT NULL
 );
 
-CREATE TABLE RoundResult (
-    result_id INT PRIMARY KEY,
-    round_id INT REFERENCES Round(round_id),
-    game_id INT REFERENCES Game(game_id),
-    white_points NUMERIC(3,1),
-    black_points NUMERIC(3,1)
+-- ==========================================
+-- מחלקה 2: משחקים
+-- ==========================================
+CREATE TABLE TimeControl (
+    tc_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    base_seconds INT NOT NULL,
+    increment_seconds INT NOT NULL
+);
+
+CREATE TABLE GameVariant (
+    variant_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Game (
+    game_id INT PRIMARY KEY,
+    white_player_id INT REFERENCES Player(player_id),
+    black_player_id INT REFERENCES Player(player_id),
+    tc_id INT REFERENCES TimeControl(tc_id),
+    variant_id INT REFERENCES GameVariant(variant_id),
+    round_id INT REFERENCES Round(round_id), -- הקשר לסבב בטורניר (אופציונלי למשחקי ידידות)
+    result VARCHAR(10),
+    start_date DATE NOT NULL,
+    end_date DATE,
+    -- אילוץ: תאריך סיום לא יכול להיות לפני תאריך התחלה
+    CONSTRAINT chk_game_dates CHECK (end_date >= start_date)
 );
